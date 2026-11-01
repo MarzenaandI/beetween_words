@@ -21,3 +21,6 @@ Duże litery, jeden wynik: **UWAGA** albo **WYGLĄDA W PORZĄDKU**, z zastrzeże
 - **Słuchanie rozmowy na żywo:** nie dla aplikacji firm trzecich. Android od wersji 10 nie daje dostępu do audio rozmowy, iPhone nigdy nie dawał. Robi to tylko producent telefonu (Google Pixel ma wykrywanie oszustw na urządzeniu, na razie nie po polsku).
 - Co już istnieje: filtry spamu w Wiadomościach Google i Samsung Smart Call, blokady spoofingu u operatorów (CERT/UKE), ostrzeżenia w aplikacjach banków. Luka: ostrzeżenie po polsku, wielkimi literami, z powodem, które starsza osoba rozumie.
 - Wniosek: strona WWW tego nie zrobi; potrzebna aplikacja natywna, najpierw Android. To projekt na tygodnie, nie wieczór; wersja WWW (wklej tekst) to krok pierwszy i test reguł.
+
+### Tryb „zanim wyślę” (1.11, po jej teście na własnych tekstach)
+Ten sam rozbiór, ale na tekst, który sama piszesz, przed wysłaniem. Wynik główny: część 5, uczciwa wersja, z zaznaczonymi różnicami wobec oryginału. Jeśli różnic nie ma, tekst jest czysty. To jest najuczciwsze użycie narzędzia i najmniej tarotowe, bo intencję znasz.
