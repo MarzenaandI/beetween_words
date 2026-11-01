@@ -23,4 +23,4 @@ Duże litery, jeden wynik: **UWAGA** albo **WYGLĄDA W PORZĄDKU**, z zastrzeże
 - Wniosek: strona WWW tego nie zrobi; potrzebna aplikacja natywna, najpierw Android. To projekt na tygodnie, nie wieczór; wersja WWW (wklej tekst) to krok pierwszy i test reguł.
 
 ### Tryb „zanim wyślę” (1.11, po jej teście na własnych tekstach)
-Ten sam rozbiór, ale na tekst, który sama piszesz, przed wysłaniem. Wynik główny: część 5, uczciwa wersja, z zaznaczonymi różnicami wobec oryginału. Jeśli różnic nie ma, tekst jest czysty. To jest najuczciwsze użycie narzędzia i najmniej tarotowe, bo intencję znasz.
+Jej poprawka: w tym trybie nie chodzi o „dobrze czy źle” ani o chwyty, tylko o dwie rzeczy: (1) czy jasno określiłam intencję, czyli jak czytelnik odczyta, o co mi chodzi, w jednym zdaniu, zanim mu powiem; (2) czego brakuje, żeby było czytelniejsze: jakie pytanie zostawiam bez odpowiedzi, jaka prośba jest tylko nie wprost, jakiej liczby, daty, osoby nie ma. Uczciwa wersja jako trzeci, opcjonalny wynik. Bez słowa „manipulacja” w tym trybie. To jest najuczciwsze użycie narzędzia i najmniej tarotowe, bo intencję znasz i możesz sprawdzić, czy model ją odczytał.
