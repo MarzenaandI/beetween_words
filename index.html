@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Między słowami</title>
+<meta name="description" content="Wklej tekst, dostań instrukcję do rozbioru intencji piszącego. Bez klucza: kopiujesz do swojego czatu. Z własnym kluczem: wynik na miejscu.">
+<style>
+:root{--bg:#f6f4ef;--fg:#1d1b17;--mut:#6b665c;--line:#d9d4c8;--acc:#7a4b1f;--card:#fffdf8;--btn:#1d1b17;--btnfg:#fffdf8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15140f;--fg:#ece7da;--mut:#9b9484;--line:#3a372e;--acc:#d9a46a;--card:#1e1c16;--btn:#ece7da;--btnfg:#15140f}}
+:root[data-theme="dark"]{--bg:#15140f;--fg:#ece7da;--mut:#9b9484;--line:#3a372e;--acc:#d9a46a;--card:#1e1c16;--btn:#ece7da;--btnfg:#15140f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 Georgia,"Times New Roman",serif;padding:0 16px 48px}
+main{max-width:760px;margin:0 auto}
+h1{font-weight:normal;font-size:2rem;margin:40px 0 4px}
+.sub{color:var(--mut);margin:0 0 24px}
+textarea{width:100%;min-height:220px;padding:12px;font:15px/1.5 ui-monospace,Menlo,monospace;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
+button{font:inherit;padding:10px 16px;border-radius:6px;border:1px solid var(--btn);background:var(--btn);color:var(--btnfg);cursor:pointer}
+button.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+button:disabled{opacity:.5;cursor:default}
+input[type=password],input[type=text],select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg);max-width:100%}
+details{border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin:18px 0;background:var(--card)}
+summary{cursor:pointer;color:var(--acc)}
+.out{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px;margin-top:16px;min-height:60px}
+.note{color:var(--mut);font-size:.92rem}
+.lang{float:right;margin-top:44px}
+.lang a{color:var(--acc);text-decoration:none;margin-left:8px;cursor:pointer}
+small{color:var(--mut)}
+</style>
+</head>
+<body>
+<main>
+<div class="lang"><a data-l="pl">PL</a><a data-l="en">EN</a></div>
+<h1 data-i="title">Między słowami</h1>
+<p class="sub" data-i="sub">Wklej tekst, który dostałaś. Dostaniesz rozbiór: co prosi wprost, co nie wprost, jakie chwyty, czego w nim nie ma, dwa czytania i uczciwą wersję.</p>
+
+<textarea id="txt" data-i="ph" placeholder="Tu wklej mail, wiadomość, post…"></textarea>
+
+<div class="row">
+  <button id="copy" data-i="copy">Kopiuj instrukcję + tekst</button>
+  <span class="note" data-i="copyNote">Potem wklej do swojego czatu z Claude albo innym modelem. Bez klucza, bez kosztu ponad to, co już płacisz.</span>
+</div>
+
+<details>
+  <summary data-i="byok">Mam własny klucz API, chcę wynik tutaj</summary>
+  <div class="row">
+    <input type="password" id="key" placeholder="sk-ant-…" autocomplete="off" style="flex:1;min-width:220px">
+    <select id="model">
+      <option value="claude-sonnet-5-5">claude-sonnet-5-5</option>
+      <option value="claude-opus-5-5">claude-opus-5-5</option>
+    </select>
+    <button id="run" data-i="run">Czytaj</button>
+  </div>
+  <p class="note" data-i="byokNote">Klucz zostaje w Twojej przeglądarce (localStorage) i leci tylko do api.anthropic.com. Autorka strony nie ma do niego dostępu i nic za Ciebie nie płaci. Każdy, kto użyje tej strony, płaci własnym kluczem albo nie płaci wcale, kopiując instrukcję.</p>
+</details>
+
+<div class="out" id="out" hidden></div>
+
+<details>
+  <summary data-i="why">Dlaczego tak, a nie „poziom manipulacji 7/10”</summary>
+  <p data-i="why1">Model zapytany „jak on chce mnie oszukać” zawsze znajdzie, jak. To działa jak tarot: coś zawsze podpasuje. Dlatego instrukcja każe cytować, nie oceniać; wypisać, czego w tekście brak; i postawić obok siebie czytanie podejrzliwe i życzliwe. Które jest prawdziwe, wiesz Ty, bo Ty znasz człowieka. Model zna tylko tekst.</p>
+</details>
+
+<p class="note"><small data-i="foot">Strona nie wysyła nigdzie Twojego tekstu, dopóki nie wpiszesz własnego klucza. Kod jest otwarty.</small></p>
+</main>
+<script>
+const I={
+pl:{title:"Między słowami",sub:"Wklej tekst, który dostałaś. Dostaniesz rozbiór: co prosi wprost, co nie wprost, jakie chwyty, czego w nim nie ma, dwa czytania i uczciwą wersję.",ph:"Tu wklej mail, wiadomość, post…",copy:"Kopiuj instrukcję + tekst",copyNote:"Potem wklej do swojego czatu z Claude albo innym modelem. Bez klucza, bez kosztu ponad to, co już płacisz.",byok:"Mam własny klucz API, chcę wynik tutaj",run:"Czytaj",byokNote:"Klucz zostaje w Twojej przeglądarce (localStorage) i leci tylko do api.anthropic.com. Autorka strony nie ma do niego dostępu i nic za Ciebie nie płaci. Każdy, kto użyje tej strony, płaci własnym kluczem albo nie płaci wcale, kopiując instrukcję.",why:"Dlaczego tak, a nie „poziom manipulacji 7/10”",why1:"Model zapytany „jak on chce mnie oszukać” zawsze znajdzie, jak. To działa jak tarot: coś zawsze podpasuje. Dlatego instrukcja każe cytować, nie oceniać; wypisać, czego w tekście brak; i postawić obok siebie czytanie podejrzliwe i życzliwe. Które jest prawdziwe, wiesz Ty, bo Ty znasz człowieka. Model zna tylko tekst.",foot:"Strona nie wysyła nigdzie Twojego tekstu, dopóki nie wpiszesz własnego klucza. Kod jest otwarty.",copied:"Skopiowane. Wklej do czatu.",empty:"Najpierw wklej tekst.",nokey:"Wpisz klucz albo użyj przycisku „Kopiuj”.",wait:"Czytam…",err:"Nie poszło: ",
+prompt:`Przeczytaj poniższy tekst i zrób rozbiór intencji piszącego. Zasady: cytuj, nie oceniaj; każdą obserwację opieraj na fragmencie tekstu; nie dawaj punktacji ani „poziomu manipulacji”; jeśli czegoś nie ma, napisz, że nie ma, i to jest wynik.
+
+Odpowiedz w pięciu częściach:
+
+1. CO PROSI WPROST / CO PROSI NIE WPROST. Dwie kolumny (lista), każda pozycja z cytatem.
+2. CHWYTY, Z NAZWY. Pośpiech, pochlebstwo, fałszywy wybór, powołanie na autorytet, wina, „wszyscy już się zgodzili”, przemilczenie kosztu, zmiana tematu. Tylko te, które są, każdy z cytatem. Jeśli żadnego nie ma, napisz: brak.
+3. CZEGO W TEKŚCIE NIE MA. Pytanie, na które nie odpowiada; liczba, której nie podaje; osoba, której nie wymienia; krok, o którym nie mówi.
+4. DWA CZYTANIA OBOK SIEBIE. Podejrzliwe i życzliwe, oba wyprowadzone z tego samego tekstu, po 3–4 zdania każde. Nie rozstrzygaj, które jest prawdziwe.
+5. UCZCIWA WERSJA. Ten sam tekst przepisany bez chwytów, z tym, co prosi nie wprost, powiedzianym wprost. Różnica między nim a oryginałem to odpowiedź na pytanie, o co naprawdę chodzi.
+
+Tekst:
+"""
+{{TEXT}}
+"""`},
+en:{title:"Between the lines",sub:"Paste a text you received. You get a breakdown: what it asks openly, what it asks covertly, which pressure moves it uses, what it leaves out, two readings, and an honest version.",ph:"Paste the email, message, post…",copy:"Copy instructions + text",copyNote:"Then paste into your own chat with Claude or another model. No key, no cost beyond what you already pay.",byok:"I have my own API key, show the result here",run:"Read",byokNote:"The key stays in your browser (localStorage) and goes only to api.anthropic.com. The page's author has no access to it and pays nothing for you. Anyone using this page pays with their own key, or pays nothing by copying the instructions.",why:"Why this, and not a “manipulation score 7/10”",why1:"A model asked “how is this person trying to trick me” will always find a way. It works like tarot: something always fits. So the instructions demand quotes, not verdicts; a list of what the text omits; and a suspicious reading next to a charitable one. Which is true, you know, because you know the person. The model knows only the text.",foot:"The page sends your text nowhere unless you enter your own key. The code is open.",copied:"Copied. Paste it into your chat.",empty:"Paste a text first.",nokey:"Enter a key or use the “Copy” button.",wait:"Reading…",err:"Failed: ",
+prompt:`Read the text below and break down the writer's intentions. Rules: quote, don't judge; base every observation on a fragment of the text; no scores or “manipulation level”; if something is absent, say so, and that is a result.
+
+Answer in five parts:
+
+1. ASKS OPENLY / ASKS COVERTLY. Two columns (lists), each item with a quote.
+2. PRESSURE MOVES, BY NAME. Urgency, flattery, false choice, appeal to authority, guilt, “everyone already agreed”, hidden cost, topic shift. Only the ones present, each with a quote. If none, write: none.
+3. WHAT THE TEXT LEAVES OUT. The question it doesn't answer; the number it doesn't give; the person it doesn't name; the step it doesn't mention.
+4. TWO READINGS SIDE BY SIDE. Suspicious and charitable, both derived from the same text, 3–4 sentences each. Do not decide which is true.
+5. THE HONEST VERSION. The same text rewritten without the moves, with what it asks covertly said openly. The difference between it and the original is the answer to what this is really about.
+
+Text:
+"""
+{{TEXT}}
+"""`}
+};
+let L=(location.hash.replace('#','')||localStorage.getItem('ms_lang')||(navigator.language.startsWith('pl')?'pl':'en'));
+if(!I[L])L='pl';
+const t=k=>I[L][k];
+function render(){document.documentElement.lang=L;document.querySelectorAll('[data-i]').forEach(e=>{const k=e.dataset.i;if(e.tagName==='TEXTAREA')e.placeholder=t(k);else e.textContent=t(k);});document.title=t('title');}
+document.querySelectorAll('.lang a').forEach(a=>a.onclick=()=>{L=a.dataset.l;try{localStorage.setItem('ms_lang',L)}catch(e){}render();});
+render();
+const txt=document.getElementById('txt'),out=document.getElementById('out'),key=document.getElementById('key');
+try{key.value=localStorage.getItem('ms_key')||''}catch(e){}
+key.addEventListener('change',()=>{try{localStorage.setItem('ms_key',key.value)}catch(e){}});
+function build(){return t('prompt').replace('{{TEXT}}',txt.value.trim());}
+document.getElementById('copy').onclick=async()=>{if(!txt.value.trim()){show(t('empty'));return;}try{await navigator.clipboard.writeText(build());show(t('copied'));}catch(e){out.hidden=false;out.textContent=build();}};
+function show(s){out.hidden=false;out.textContent=s;}
+document.getElementById('run').onclick=async()=>{
+  if(!txt.value.trim()){show(t('empty'));return;}
+  if(!key.value.trim()){show(t('nokey'));return;}
+  const b=document.getElementById('run');b.disabled=true;show(t('wait'));
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key.value.trim(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:document.getElementById('model').value,max_tokens:2500,messages:[{role:'user',content:build()}]})});
+    const j=await r.json();
+    if(!r.ok)throw new Error(j.error&&j.error.message||r.status);
+    show((j.content||[]).map(c=>c.text||'').join('\n'));
+  }catch(e){show(t('err')+e.message);}finally{b.disabled=false;}
+};
+</script>
+</body>
+</html>
